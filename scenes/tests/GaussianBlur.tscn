@@ -1,0 +1,40 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/tests/GaussianBlur.cs" type="Script" id=1]
+
+[sub_resource type="Shader" id=11]
+code = "shader_type canvas_item;
+
+uniform float strength : hint_range(0, 0.1, 0.001) = 0;
+uniform int samples = 11;
+
+void fragment() {
+  vec4 color = texture(SCREEN_TEXTURE, SCREEN_UV);
+  int pix_count = 1;
+  float blur_step = strength / float(samples);
+  for (int i = 1; i < samples; ++i) {
+    float amount = blur_step * float(i);
+    pix_count += 8;
+    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(-amount, -amount));
+    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(-amount, 0));
+    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(-amount, amount));
+    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(0, -amount));
+    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(0, amount));
+    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(amount, -amount));
+    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(amount, 0));
+    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(amount, amount));    
+  }
+  COLOR = color / float(pix_count);
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+resource_local_to_scene = true
+shader = SubResource( 11 )
+shader_param/strength = 0.0
+shader_param/samples = 11
+
+[node name="GaussianBlur" type="ColorRect"]
+material = SubResource( 2 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
