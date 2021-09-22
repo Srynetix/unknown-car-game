@@ -83,6 +83,8 @@ public class Game : Control
         UpdateEffects(delta);
     }
 
+    #region Update methods
+
     private void UpdateTileMap(float delta) {
         _TileMap.Position += new Vector2(0, _Car.Speed * delta);
 
@@ -116,6 +118,10 @@ public class Game : Control
 
         _NextTimeout = 0.25f + ((1.0f - ratio) * 2.0f);
     }
+
+    #endregion
+
+    #region Callbacks
 
     private void TimeOut() {
         if ((int)GD.RandRange(0, 20) == 0) {
@@ -226,4 +232,6 @@ public class Game : Control
     private void RestartGame() {
         GetTree().ReloadCurrentScene();
     }
+
+    #endregion
 }
