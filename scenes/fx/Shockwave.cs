@@ -3,19 +3,22 @@ using Godot;
 public class Shockwave : ColorRect
 {
     [Export]
-    public float Force {
+    public float Force
+    {
         get => ShaderExt.GetShaderParam<float>(this, "force");
         set => ShaderExt.SetShaderParam(this, "force", value);
     }
 
     [Export]
-    public float Thickness {
+    public float Thickness
+    {
         get => ShaderExt.GetShaderParam<float>(this, "thickness");
         set => ShaderExt.SetShaderParam(this, "thickness", value);
     }
 
     [Export]
-    public Vector2 Center {
+    public Vector2 Center
+    {
         get => ShaderExt.GetShaderParam<Vector2>(this, "center");
         set => ShaderExt.SetShaderParam(this, "center", value);
     }
@@ -27,7 +30,8 @@ public class Shockwave : ColorRect
         _Tween = GetNode<Tween>("Tween");
     }
 
-    public void Start(Vector2 position) {
+    public void Start(Vector2 position)
+    {
         Center = position;
         _Tween.StopAll();
 
@@ -37,7 +41,8 @@ public class Shockwave : ColorRect
         _Tween.Start();
     }
 
-    public bool IsRunning() {
+    public bool IsRunning()
+    {
         return _Tween.IsActive();
     }
 

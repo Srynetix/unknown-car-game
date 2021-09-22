@@ -1,11 +1,14 @@
 using Godot;
 
-public class Obstacle : KinematicBody2D {
+public class Obstacle : KinematicBody2D
+{
     [Signal]
     public delegate void hit();
 
     [Export]
     public float InitialSpeed = -50;
+    [Export]
+    public float InitialMaxRotation = 10.0f;
 
     public Car Car;
 
@@ -16,7 +19,7 @@ public class Obstacle : KinematicBody2D {
 
     public override void _Ready()
     {
-        RotationDegrees = (float)GD.RandRange(-10.0f, 10.0f);
+        RotationDegrees = (float)GD.RandRange(-InitialMaxRotation, InitialMaxRotation);
     }
 
     public override void _Process(float delta)
@@ -24,26 +27,33 @@ public class Obstacle : KinematicBody2D {
         var size = GetViewportRect().Size;
         _Velocity = new Vector2(0, Car.Speed * delta) + _Impulse + Vector2.Down * InitialSpeed * delta;
 
-        if (!_Hit) {
+        if (!_Hit)
+        {
             var col = MoveAndCollide(_Velocity);
-            if (col != null) {
-                if (col.Collider is Car car) {
+            if (col != null)
+            {
+                if (col.Collider is Car car)
+                {
                     _Hit = true;
                     CarCollision(car);
                 }
             }
-        } else {
+        }
+        else
+        {
             _Velocity = MoveAndSlide(_Velocity);
         }
 
         RotationDegrees += _AngularVelocity;
 
-        if (Position.y > size.y + 200 || Position.y < -200 || Position.x < -200 || Position.x > size.x + 200) {
+        if (Position.y > size.y + 200 || Position.y < -200 || Position.x < -200 || Position.x > size.x + 200)
+        {
             QueueFree();
         }
     }
 
-    protected virtual void CarCollision(Car car) {
+    protected virtual void CarCollision(Car car)
+    {
         var ratio = car.Speed / car.CarMaxForwardSpeed;
         var diff = Position - car.Position;
         var dir = diff.Normalized();
@@ -57,7 +67,8 @@ public class Obstacle : KinematicBody2D {
         EmitSignal(nameof(hit));
     }
 
-    protected void SpawnSparkles(Vector2 pos) {
+    protected void SpawnSparkles(Vector2 pos)
+    {
         var inst = LoadCache.GetInstance().InstantiateScene<Sparkle>();
         inst.Position = pos;
         GetParent().AddChild(inst);

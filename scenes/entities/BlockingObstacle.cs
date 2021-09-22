@@ -7,7 +7,8 @@ public class BlockingObstacle : Obstacle
         InitialSpeed = 0;
     }
 
-    protected override void CarCollision(Car car) {
+    protected override void CarCollision(Car car)
+    {
         car.Crash();
     }
 }

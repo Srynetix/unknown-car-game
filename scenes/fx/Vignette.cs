@@ -3,7 +3,8 @@ using Godot;
 public class Vignette : ColorRect
 {
     [Export]
-    public float Ratio {
+    public float Ratio
+    {
         get => ShaderExt.GetShaderParam<float>(this, "ratio");
         set => ShaderExt.SetShaderParam(this, "ratio", value);
     }
