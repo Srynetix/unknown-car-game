@@ -42,10 +42,10 @@ public class Game : Control
         LoadCache.GetInstance().StoreScene<Chronometer>("res://scenes/entities/Chronometer.tscn");
         LoadCache.GetInstance().StoreScene<BlockingObstacle>("res://scenes/entities/BlockingObstacle.tscn");
 
-        _TileMap = GetNode<TileMap>("TileMap");
-        _SpeedLabel = GetNode<Label>("CanvasLayer/Speed");
+        _TileMap = GetNode<TileMap>("Background");
         _ScoreLabel = GetNode<Label>("GameOver/Score");
-        _TimeLabel = GetNode<Label>("CanvasLayer/Time");
+        _SpeedLabel = GetNode<Label>("UI/Speed");
+        _TimeLabel = GetNode<Label>("UI/Time");
         _SpawnTimer = GetNode<Timer>("SpawnTimer");
         _SpawnBlockingTimer = GetNode<Timer>("SpawnBlockingTimer");
         _ChronoTimer = GetNode<Timer>("ChronoTimer");
