@@ -3,11 +3,12 @@
 [ext_resource path="res://assets/packs/kenney_racingpack_updated/PNG/Cars/car_yellow_2.png" type="Texture" id=1]
 [ext_resource path="res://scenes/entities/Obstacle.cs" type="Script" id=2]
 
-
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 16.2298, 26.5141 )
 
-[node name="Obstacle" type="Area2D"]
+[node name="Obstacle" type="KinematicBody2D"]
+position = Vector2( 0, -1 )
+collision_mask = 8
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]

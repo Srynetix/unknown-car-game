@@ -1,6 +1,6 @@
 using Godot;
 
-public class Car : Area2D {
+public class Car : KinematicBody2D {
     [Signal]
     public delegate void crash();
 
@@ -117,7 +117,8 @@ public class Car : Area2D {
         var y = 50 + (ratio * (size.y / 4 - 50));
         y = size.y - y;
 
-        Position = new Vector2(x, y);
+        var offset = new Vector2(x, y) - Position;
+        MoveAndCollide(offset);
     }
 
     private void HandleEffects() {

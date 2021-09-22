@@ -6,7 +6,9 @@
 [sub_resource type="CircleShape2D" id=1]
 radius = 36.3776
 
-[node name="Chronometer" type="Area2D"]
+[node name="Chronometer" type="KinematicBody2D"]
+collision_layer = 4
+collision_mask = 8
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]

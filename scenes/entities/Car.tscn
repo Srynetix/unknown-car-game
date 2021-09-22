@@ -15,7 +15,9 @@ _data = [ Vector2( 0, 2 ), 0.0, -3.92797, 0, 0, Vector2( 1, 1.98729 ), 4.22425, 
 offsets = PoolRealArray( 0, 0.261745, 0.671141, 1 )
 colors = PoolColorArray( 0.601685, 0, 0.726563, 0, 0.52701, 0.0740204, 0.902344, 0, 0.332031, 0.0894928, 0.277081, 1, 0.24536, 0.0492096, 0.292969, 0 )
 
-[node name="Car" type="Area2D"]
+[node name="Car" type="KinematicBody2D"]
+collision_layer = 8
+collision_mask = 7
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
