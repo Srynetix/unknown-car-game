@@ -17,6 +17,7 @@ public class Game : Control
     private Label _ScoreLabel;
     private Label _TimeLabel;
     private Timer _SpawnTimer;
+    private Timer _SpawnBlockingTimer;
     private Timer _ChronoTimer;
     private Camera2D _Camera;
     private Node2D _ObstaclesContainer;
@@ -30,11 +31,13 @@ public class Game : Control
     private float _NextTimeout;
     private int _Score;
     private int _RemainingTime;
+    private float _BlockingWaitTime = 5.0f;
 
     public override void _Ready()
     {
         LoadCache.GetInstance().StoreScene("CarCrash", "res://scenes/fx/CarCrash.tscn");
         LoadCache.GetInstance().StoreScene("Sparkle", "res://scenes/fx/Sparkle.tscn");
+        LoadCache.GetInstance().StoreScene("Warning", "res://scenes/fx/Warning.tscn");
         LoadCache.GetInstance().StoreScene("Obstacle", "res://scenes/entities/Obstacle.tscn");
         LoadCache.GetInstance().StoreScene("Chronometer", "res://scenes/entities/Chronometer.tscn");
         LoadCache.GetInstance().StoreScene("BlockingObstacle", "res://scenes/entities/BlockingObstacle.tscn");
@@ -44,6 +47,7 @@ public class Game : Control
         _ScoreLabel = GetNode<Label>("GameOver/Score");
         _TimeLabel = GetNode<Label>("CanvasLayer/Time");
         _SpawnTimer = GetNode<Timer>("SpawnTimer");
+        _SpawnBlockingTimer = GetNode<Timer>("SpawnBlockingTimer");
         _ChronoTimer = GetNode<Timer>("ChronoTimer");
         _Camera = GetNode<Camera2D>("Camera");
         _Car = GetNode<Car>("Car");
@@ -58,8 +62,12 @@ public class Game : Control
         _SpawnTimer.Connect("timeout", this, nameof(TimeOut));
         _NextTimeout = _SpawnTimer.WaitTime;
         _ChronoTimer.Connect("timeout", this, nameof(ChronoTimeOut));
+        _SpawnBlockingTimer.Connect("timeout", this, nameof(BlockingTimeOut));
         _Car.Connect(nameof(Car.crash), this, nameof(GameOver));
         _RestartButton.Connect("pressed", this, nameof(RestartGame));
+
+        _SpawnBlockingTimer.WaitTime = _BlockingWaitTime;
+        _SpawnBlockingTimer.Start();
 
         var size = GetViewportRect().Size;
         _Car.Position = new Vector2(size.x / 2, size.y - 100);
@@ -106,13 +114,11 @@ public class Game : Control
             }
         }
 
-        _NextTimeout = 0.15f + ((1.0f - ratio) * 2.0f);
+        _NextTimeout = 0.25f + ((1.0f - ratio) * 2.0f);
     }
 
     private void TimeOut() {
         if ((int)GD.RandRange(0, 20) == 0) {
-            SpawnBlockingObstacle();
-        } else if ((int)GD.RandRange(0, 20) == 0) {
             SpawnChronometer();
         } else {
             SpawnObstacle();
@@ -129,6 +135,26 @@ public class Game : Control
         if (_RemainingTime == 0) {
             _Car.Crash();
         }
+    }
+
+    private async void BlockingTimeOut() {
+        // Choose position
+        var size = GetViewportRect().Size;
+        var off = 10;
+        var x = (float)GD.RandRange(off, size.x - off);
+
+        var scene = LoadCache.GetInstance().LoadScene("Warning");
+        var inst = scene.Instance<Warning>();
+        inst.Position = new Vector2(x, 50);
+        AddChild(inst);
+
+        await ToSignal(GetTree().CreateTimer(1.5f), "timeout");
+        SpawnBlockingObstacle(inst.Position + Vector2.Up * 150);
+
+        _BlockingWaitTime -= 1.0f;
+        _BlockingWaitTime = Mathf.Max(_BlockingWaitTime, 0.1f);
+        _SpawnBlockingTimer.WaitTime = _BlockingWaitTime;
+        _SpawnBlockingTimer.Start();
     }
 
     private void TimePicked() {
@@ -180,14 +206,11 @@ public class Game : Control
         _ObstaclesContainer.AddChild(inst);
     }
 
-    private void SpawnBlockingObstacle() {
-        var size = GetViewportRect().Size;
-        var offset = 10;
-
+    private void SpawnBlockingObstacle(Vector2 pos) {
         var scene = LoadCache.GetInstance().LoadScene("BlockingObstacle");
         var inst = scene.Instance<BlockingObstacle>();
         inst.Car = _Car;
-        inst.Position = new Vector2((float)GD.RandRange(offset, size.x - offset), -100);
+        inst.Position = pos;
 
         _ObstaclesContainer.AddChild(inst);
     }

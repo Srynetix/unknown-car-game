@@ -16,8 +16,6 @@ public class Obstacle : KinematicBody2D {
 
     public override void _Ready()
     {
-        // Connect("body_entered", this, nameof(AreaEntered));
-        _Velocity = new Vector2(0, InitialSpeed);
         _AngularVelocity = (float)GD.RandRange(-10.0f, 10.0f);
         RotationDegrees = _AngularVelocity;
     }
@@ -25,7 +23,7 @@ public class Obstacle : KinematicBody2D {
     public override void _Process(float delta)
     {
         var size = GetViewportRect().Size;
-        _Velocity = new Vector2(0, Car.Speed * delta) + _Impulse;
+        _Velocity = new Vector2(0, Car.Speed * delta) + _Impulse + Vector2.Down * InitialSpeed * delta;
 
         if (!_Hit) {
             var col = MoveAndCollide(_Velocity);

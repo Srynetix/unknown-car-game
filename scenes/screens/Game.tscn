@@ -221,6 +221,11 @@ autostart = true
 [node name="ChronoTimer" type="Timer" parent="."]
 autostart = true
 
+[node name="SpawnBlockingTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+autostart = true
+
 [node name="MotionBlur" parent="." instance=ExtResource( 5 )]
 material = SubResource( 2 )
 

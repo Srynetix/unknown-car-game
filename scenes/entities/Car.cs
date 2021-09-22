@@ -14,7 +14,7 @@ public class Car : KinematicBody2D {
     [Export]
     public float CarMaxForwardSpeed = 1500.0f;
     [Export]
-    public float CarMinForwardSpeed = 10.0f;
+    public float CarMinForwardSpeed = 200.0f;
     [Export]
     public float CarMaxAngle = 50.0f;
 
