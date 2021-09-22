@@ -1,0 +1,176 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://assets/fonts/VG5000/VG5000-Regular.otf" type="DynamicFontData" id=1]
+[ext_resource path="res://scenes/screens/Game/GameOver.cs" type="Script" id=2]
+[ext_resource path="res://scenes/fx/GaussianBlur.tscn" type="PackedScene" id=3]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform float strength : hint_range(0, 0.1, 0.001) = 0;
+uniform int samples = 11;
+
+void fragment() {
+  vec4 color = texture(SCREEN_TEXTURE, SCREEN_UV);
+  int pix_count = 1;
+  float blur_step = strength / float(samples);
+  for (int i = 1; i < samples; ++i) {
+    float amount = blur_step * float(i);
+    pix_count += 8;
+    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(-amount, -amount));
+    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(-amount, 0));
+    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(-amount, amount));
+    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(0, -amount));
+    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(0, amount));
+    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(amount, -amount));
+    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(amount, 0));
+    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(amount, amount));    
+  }
+  COLOR = color / float(pix_count);
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/strength = 0.0
+shader_param/samples = 12
+
+[sub_resource type="DynamicFont" id=3]
+size = 64
+outline_size = 2
+outline_color = Color( 0.231373, 0, 0, 1 )
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 64
+outline_size = 2
+outline_color = Color( 0.756863, 0, 0, 1 )
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+[sub_resource type="DynamicFont" id=6]
+size = 64
+outline_size = 2
+outline_color = Color( 0.407843, 0.211765, 0.211765, 1 )
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="Animation" id=7]
+length = 1.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("You:margin_top")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 0.0647041, 0.0883883 ),
+"update": 0,
+"values": [ 450.0, 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("You:margin_left")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ -200.0, -200.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Died:margin_left")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.3, 0.7 ),
+"transitions": PoolRealArray( 1, 0.0824693, 1 ),
+"update": 0,
+"values": [ 300.0, 300.0, 0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Play:margin_top")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.7, 1.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0, -150 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("GaussianBlur:material:shader_param/strength")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.025 ]
+}
+
+[node name="GameOver" type="CanvasLayer"]
+script = ExtResource( 2 )
+
+[node name="GaussianBlur" parent="." instance=ExtResource( 3 )]
+material = SubResource( 2 )
+
+[node name="You" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -200.0
+margin_top = 450.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.647059, 0, 0, 1 )
+text = "YOU"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Died" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 300.0
+custom_fonts/font = SubResource( 4 )
+text = "DIED! :("
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Play" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -159.5
+custom_styles/focus = SubResource( 5 )
+custom_fonts/font = SubResource( 6 )
+custom_colors/font_color = Color( 0.443137, 0.313726, 0.501961, 1 )
+shortcut_in_tooltip = false
+text = "Play again"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/idle = SubResource( 7 )

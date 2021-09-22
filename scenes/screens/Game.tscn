@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://assets/fonts/VG5000/VG5000-Regular.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/background/Background.tscn" type="PackedScene" id=2]
@@ -7,7 +7,7 @@
 [ext_resource path="res://scenes/fx/MotionBlur.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/fx/Vignette.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/fx/Shockwave.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scenes/fx/GaussianBlur.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/screens/Game/GameOver.tscn" type="PackedScene" id=8]
 
 [sub_resource type="Shader" id=1]
 resource_local_to_scene = true
@@ -56,7 +56,7 @@ use_mipmaps = true
 use_filter = true
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=6]
 size = 32
 outline_size = 1
 outline_color = Color( 0.211765, 0, 0.309804, 1 )
@@ -64,8 +64,7 @@ use_mipmaps = true
 use_filter = true
 font_data = ExtResource( 1 )
 
-[sub_resource type="Animation" id=6]
-resource_name = "idle"
+[sub_resource type="Animation" id=7]
 length = 4.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("Instructions:modulate")
@@ -80,133 +79,13 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 
-[sub_resource type="Shader" id=7]
-code = "shader_type canvas_item;
-
-uniform float strength : hint_range(0, 0.1, 0.001) = 0;
-uniform int samples = 11;
-
-void fragment() {
-  vec4 color = texture(SCREEN_TEXTURE, SCREEN_UV);
-  int pix_count = 1;
-  float blur_step = strength / float(samples);
-  for (int i = 1; i < samples; ++i) {
-    float amount = blur_step * float(i);
-    pix_count += 8;
-    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(-amount, -amount));
-    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(-amount, 0));
-    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(-amount, amount));
-    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(0, -amount));
-    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(0, amount));
-    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(amount, -amount));
-    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(amount, 0));
-    color += texture(SCREEN_TEXTURE, SCREEN_UV + vec2(amount, amount));    
-  }
-  COLOR = color / float(pix_count);
-}"
-
-[sub_resource type="ShaderMaterial" id=8]
-resource_local_to_scene = true
-shader = SubResource( 7 )
-shader_param/strength = 0.0
-shader_param/samples = 12
-
-[sub_resource type="DynamicFont" id=9]
+[sub_resource type="DynamicFont" id=5]
 size = 64
 outline_size = 2
 outline_color = Color( 0, 0, 0, 0.498039 )
 use_mipmaps = true
 use_filter = true
 font_data = ExtResource( 1 )
-
-[sub_resource type="DynamicFont" id=10]
-size = 64
-outline_size = 2
-outline_color = Color( 0.231373, 0, 0, 1 )
-use_mipmaps = true
-use_filter = true
-font_data = ExtResource( 1 )
-
-[sub_resource type="DynamicFont" id=11]
-size = 64
-outline_size = 2
-outline_color = Color( 0.756863, 0, 0, 1 )
-use_mipmaps = true
-use_filter = true
-font_data = ExtResource( 1 )
-
-[sub_resource type="StyleBoxEmpty" id=12]
-
-[sub_resource type="DynamicFont" id=13]
-size = 64
-outline_size = 2
-outline_color = Color( 0.407843, 0.211765, 0.211765, 1 )
-use_mipmaps = true
-use_filter = true
-font_data = ExtResource( 1 )
-
-[sub_resource type="Animation" id=14]
-length = 1.5
-tracks/0/type = "value"
-tracks/0/path = NodePath("You:margin_top")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.3 ),
-"transitions": PoolRealArray( 0.0647041, 0.0883883 ),
-"update": 0,
-"values": [ 450.0, 0.0 ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("You:margin_left")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.3 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ -200.0, -200.0 ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("Died:margin_left")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0, 0.3, 0.7 ),
-"transitions": PoolRealArray( 1, 0.0824693, 1 ),
-"update": 0,
-"values": [ 300.0, 300.0, 0 ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("Play:margin_top")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0, 0.7, 1.5 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ 0.0, 0.0, -150 ]
-}
-tracks/4/type = "value"
-tracks/4/path = NodePath("GaussianBlur:material:shader_param/strength")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
-"times": PoolRealArray( 0, 0.2 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ 0.0, 0.025 ]
-}
 
 [node name="Game" type="Control"]
 anchor_right = 1.0
@@ -260,9 +139,9 @@ __meta__ = {
 
 [node name="Shockwave" parent="." instance=ExtResource( 7 )]
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="UIBottom" type="CanvasLayer" parent="."]
 
-[node name="Speed" type="Label" parent="UI"]
+[node name="Speed" type="Label" parent="UIBottom"]
 visible = false
 margin_left = 237.523
 margin_top = 726.388
@@ -277,7 +156,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Time" type="Label" parent="UI"]
+[node name="Time" type="Label" parent="UIBottom"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -296,12 +175,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Instructions" type="RichTextLabel" parent="UI"]
+[node name="Instructions" type="RichTextLabel" parent="UIBottom"]
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = -165.0
-custom_fonts/normal_font = SubResource( 5 )
+custom_fonts/normal_font = SubResource( 6 )
 custom_colors/default_color = Color( 0.305882, 0.0117647, 0.403922, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]Touch screen to [rainbow]accelerate[/rainbow]
@@ -313,67 +192,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="UI"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UIBottom"]
 autoplay = "idle"
-anims/idle = SubResource( 6 )
+anims/idle = SubResource( 7 )
 
-[node name="GameOver" type="CanvasLayer" parent="."]
+[node name="GameOver" parent="." instance=ExtResource( 8 )]
 
-[node name="GaussianBlur" parent="GameOver" instance=ExtResource( 8 )]
-material = SubResource( 8 )
+[node name="UITop" type="CanvasLayer" parent="."]
 
-[node name="Score" type="Label" parent="GameOver"]
+[node name="Score" type="Label" parent="UITop"]
 anchor_right = 1.0
 margin_bottom = 77.0
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0, 0.890196, 0.0784314, 0.498039 )
 text = "0$"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="You" type="Label" parent="GameOver"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -200.0
-margin_top = 450.0
-custom_fonts/font = SubResource( 10 )
-custom_colors/font_color = Color( 0.647059, 0, 0, 1 )
-text = "YOU"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Died" type="Label" parent="GameOver"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 300.0
-custom_fonts/font = SubResource( 11 )
-text = "DIED! :("
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Play" type="Button" parent="GameOver"]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -159.5
-custom_styles/focus = SubResource( 12 )
-custom_fonts/font = SubResource( 13 )
-custom_colors/font_color = Color( 0.443137, 0.313726, 0.501961, 1 )
-shortcut_in_tooltip = false
-text = "Play again"
-flat = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="GameOver"]
-anims/idle = SubResource( 14 )

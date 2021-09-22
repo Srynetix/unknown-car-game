@@ -24,8 +24,7 @@ public class Game : Control
     private MotionBlur _MotionBlur;
     private Vignette _Vignette;
     private Shockwave _Shockwave;
-    private AnimationPlayer _AnimationPlayer;
-    private Button _RestartButton;
+    private GameOver _GameOver;
 
     private Vector2 _TileSize;
     private float _NextTimeout;
@@ -43,9 +42,9 @@ public class Game : Control
         LoadCache.GetInstance().StoreScene<BlockingObstacle>("res://scenes/entities/BlockingObstacle.tscn");
 
         _TileMap = GetNode<TileMap>("Background");
-        _ScoreLabel = GetNode<Label>("GameOver/Score");
-        _SpeedLabel = GetNode<Label>("UI/Speed");
-        _TimeLabel = GetNode<Label>("UI/Time");
+        _ScoreLabel = GetNode<Label>("UITop/Score");
+        _SpeedLabel = GetNode<Label>("UIBottom/Speed");
+        _TimeLabel = GetNode<Label>("UIBottom/Time");
         _SpawnTimer = GetNode<Timer>("SpawnTimer");
         _SpawnBlockingTimer = GetNode<Timer>("SpawnBlockingTimer");
         _ChronoTimer = GetNode<Timer>("ChronoTimer");
@@ -55,14 +54,12 @@ public class Game : Control
         _MotionBlur = GetNode<MotionBlur>("MotionBlur");
         _Vignette = GetNode<Vignette>("Vignette");
         _Shockwave = GetNode<Shockwave>("Shockwave");
-        _AnimationPlayer = GetNode<AnimationPlayer>("GameOver/AnimationPlayer");
-        _RestartButton = GetNode<Button>("GameOver/Play");
+        _GameOver = GetNode<GameOver>("GameOver");
 
         _SpawnTimer.Connect("timeout", this, nameof(TimeOut));
         _ChronoTimer.Connect("timeout", this, nameof(ChronoTimeOut));
         _SpawnBlockingTimer.Connect("timeout", this, nameof(BlockingTimeOut));
         _Car.Connect(nameof(Car.crash), this, nameof(GameOver));
-        _RestartButton.Connect("pressed", this, nameof(RestartGame));
 
         _TileSize = _TileMap.CellSize * _TileMap.Scale;
         _NextTimeout = _SpawnTimer.WaitTime;
@@ -78,9 +75,9 @@ public class Game : Control
 
     public override void _Process(float delta)
     {
-        UpdateCar(delta);
+        UpdateCar();
         UpdateTileMap(delta);
-        UpdateEffects(delta);
+        UpdateEffects();
     }
 
     #region Update methods
@@ -96,13 +93,13 @@ public class Game : Control
         }
     }
 
-    private void UpdateCar(float delta)
+    private void UpdateCar()
     {
         _SpeedLabel.Text = $"{(int)(_Car.Speed / KM_H_COEF)} km/h";
         _SpeedLabel.RectPosition = _Car.Position - _SpeedLabel.RectSize / 2;
     }
 
-    private void UpdateEffects(float delta)
+    private void UpdateEffects()
     {
         float ratio = _Car.Speed / _Car.CarMaxForwardSpeed;
         float coef = (float)GD.RandRange(-1.0f, 1.0f) * 2 * ratio;
@@ -157,7 +154,6 @@ public class Game : Control
 
     private async void BlockingTimeOut()
     {
-        // Choose position
         var size = GetViewportRect().Size;
         var off = 10;
         var x = (float)GD.RandRange(off, size.x - off);
@@ -208,10 +204,7 @@ public class Game : Control
         _ChronoTimer.Stop();
         _SpawnTimer.Stop();
         _Shockwave.Start(center);
-
-        GetNode<GaussianBlur>("GameOver/GaussianBlur").Visible = true;
-        _AnimationPlayer.Play("idle");
-        _RestartButton.GrabFocus();
+        _GameOver.Start();
     }
 
     private void SpawnObstacle()
@@ -247,11 +240,6 @@ public class Game : Control
         inst.Connect(nameof(Chronometer.picked), this, nameof(TimePicked));
 
         _ObstaclesContainer.AddChild(inst);
-    }
-
-    private void RestartGame()
-    {
-        GetTree().ReloadCurrentScene();
     }
 
     #endregion

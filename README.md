@@ -1,6 +1,6 @@
 # Unknown car game
 
-Unknown car game made in Godot Engine, using C#.
+Simple car game made in Godot Engine, using C#.
 
 # Preview
 
