@@ -11,8 +11,12 @@ config_version=4
 [application]
 
 config/name="unknown-car-game"
-run/main_scene="res://scenes/tests/TestGameplay.tscn"
+run/main_scene="res://scenes/screens/Game.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+LoadCache="*res://scenes/utils/LoadCache.cs"
 
 [display]
 
