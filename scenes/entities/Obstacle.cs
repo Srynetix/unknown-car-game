@@ -31,9 +31,6 @@ public class Obstacle : KinematicBody2D {
                 if (col.Collider is Car car) {
                     _Hit = true;
                     CarCollision(car);
-                } else if (col.Collider is Obstacle obs) {
-                    _Hit = true;
-                    ObstacleCollision(obs);
                 }
             }
         } else {
@@ -42,22 +39,6 @@ public class Obstacle : KinematicBody2D {
 
         if (Position.y > size.y + 200 || Position.y < -200 || Position.x < -200 || Position.x > size.x + 200) {
             QueueFree();
-        }
-    }
-
-    private void AreaEntered(PhysicsBody2D other) {
-        if (_Hit) {
-            return;
-        }
-
-        if (other is Car car) {
-            _Hit = true;
-            CarCollision(car);
-        }
-
-        else if (other is Obstacle obs) {
-            _Hit = true;
-            ObstacleCollision(obs);
         }
     }
 
@@ -71,17 +52,8 @@ public class Obstacle : KinematicBody2D {
         EmitSignal(nameof(hit));
     }
 
-    protected virtual void ObstacleCollision(Obstacle obs) {
-        var dir = (Position - obs.Position).Normalized();
-        var half = (Position - obs.Position) / 2;
-        _Impulse = dir * 500;
-        SpawnSparkles(Position + half);
-    }
-
     protected void SpawnSparkles(Vector2 pos) {
-        var scene = LoadCache.GetInstance().LoadScene("Sparkle");
-        var inst = scene.Instance<Sparkle>();
-
+        var inst = LoadCache.GetInstance().InstantiateScene<Sparkle>();
         inst.Position = pos;
         GetParent().AddChild(inst);
     }

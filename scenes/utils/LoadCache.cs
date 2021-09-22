@@ -20,11 +20,25 @@ public class LoadCache: Node {
         _Cache[name] = scene;
     }
 
-    public T LoadScene<T>(string name) {
-        return (T)_Cache[name];
+    public void StoreScene<T>(string path) where T: class {
+        var name = typeof(T).Name;
+        StoreScene(name, path);
     }
 
     public PackedScene LoadScene(string name) {
-        return LoadScene<PackedScene>(name);
+        return (PackedScene)_Cache[name];
+    }
+
+    public PackedScene LoadScene<T>() where T: class {
+        var name = typeof(T).Name;
+        return LoadScene(name);
+    }
+
+    public T InstantiateScene<T>(string name) where T: class {
+        return LoadScene(name).Instance<T>();
+    }
+
+    public T InstantiateScene<T>() where T: class {
+        return LoadScene<T>().Instance<T>();
     }
 }

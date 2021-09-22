@@ -1,24 +1,23 @@
 using Godot;
-using ShaderExt;
 
 public class Shockwave : ColorRect
 {
     [Export]
     public float Force {
-        get => this.GetShaderParam<float>("force");
-        set => this.SetShaderParam("force", value);
+        get => ShaderExt.GetShaderParam<float>(this, "force");
+        set => ShaderExt.SetShaderParam(this, "force", value);
     }
 
     [Export]
     public float Thickness {
-        get => this.GetShaderParam<float>("thickness");
-        set => this.SetShaderParam("thickness", value);
+        get => ShaderExt.GetShaderParam<float>(this, "thickness");
+        set => ShaderExt.SetShaderParam(this, "thickness", value);
     }
 
     [Export]
     public Vector2 Center {
-        get => this.GetShaderParam<Vector2>("center");
-        set => this.SetShaderParam("center", value);
+        get => ShaderExt.GetShaderParam<Vector2>(this, "center");
+        set => ShaderExt.SetShaderParam(this, "center", value);
     }
 
     private Tween _Tween;

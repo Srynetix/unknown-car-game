@@ -35,12 +35,12 @@ public class Game : Control
 
     public override void _Ready()
     {
-        LoadCache.GetInstance().StoreScene("CarCrash", "res://scenes/fx/CarCrash.tscn");
-        LoadCache.GetInstance().StoreScene("Sparkle", "res://scenes/fx/Sparkle.tscn");
-        LoadCache.GetInstance().StoreScene("Warning", "res://scenes/fx/Warning.tscn");
-        LoadCache.GetInstance().StoreScene("Obstacle", "res://scenes/entities/Obstacle.tscn");
-        LoadCache.GetInstance().StoreScene("Chronometer", "res://scenes/entities/Chronometer.tscn");
-        LoadCache.GetInstance().StoreScene("BlockingObstacle", "res://scenes/entities/BlockingObstacle.tscn");
+        LoadCache.GetInstance().StoreScene<CarCrash>("res://scenes/fx/CarCrash.tscn");
+        LoadCache.GetInstance().StoreScene<Sparkle>("res://scenes/fx/Sparkle.tscn");
+        LoadCache.GetInstance().StoreScene<Warning>("res://scenes/fx/Warning.tscn");
+        LoadCache.GetInstance().StoreScene<Obstacle>("res://scenes/entities/Obstacle.tscn");
+        LoadCache.GetInstance().StoreScene<Chronometer>("res://scenes/entities/Chronometer.tscn");
+        LoadCache.GetInstance().StoreScene<BlockingObstacle>("res://scenes/entities/BlockingObstacle.tscn");
 
         _TileMap = GetNode<TileMap>("TileMap");
         _SpeedLabel = GetNode<Label>("CanvasLayer/Speed");
@@ -58,14 +58,14 @@ public class Game : Control
         _AnimationPlayer = GetNode<AnimationPlayer>("GameOver/AnimationPlayer");
         _RestartButton = GetNode<Button>("GameOver/Play");
 
-        _TileSize = _TileMap.CellSize * _TileMap.Scale;
         _SpawnTimer.Connect("timeout", this, nameof(TimeOut));
-        _NextTimeout = _SpawnTimer.WaitTime;
         _ChronoTimer.Connect("timeout", this, nameof(ChronoTimeOut));
         _SpawnBlockingTimer.Connect("timeout", this, nameof(BlockingTimeOut));
         _Car.Connect(nameof(Car.crash), this, nameof(GameOver));
         _RestartButton.Connect("pressed", this, nameof(RestartGame));
 
+        _TileSize = _TileMap.CellSize * _TileMap.Scale;
+        _NextTimeout = _SpawnTimer.WaitTime;
         _SpawnBlockingTimer.WaitTime = _BlockingWaitTime;
         _SpawnBlockingTimer.Start();
 
@@ -73,7 +73,7 @@ public class Game : Control
         _Car.Position = new Vector2(size.x / 2, size.y - 100);
 
         _RemainingTime = InitialRemainingTime;
-        _TimeLabel.Text = $"{_RemainingTime}";
+        UpdateTimeLabel();
     }
 
     public override void _Process(float delta)
@@ -143,8 +143,7 @@ public class Game : Control
         var off = 10;
         var x = (float)GD.RandRange(off, size.x - off);
 
-        var scene = LoadCache.GetInstance().LoadScene("Warning");
-        var inst = scene.Instance<Warning>();
+        var inst = LoadCache.GetInstance().InstantiateScene<Warning>();
         inst.Position = new Vector2(x, 50);
         AddChild(inst);
 
@@ -169,15 +168,14 @@ public class Game : Control
         _TimeLabel.RectScale = new Vector2(scaleValue, scaleValue);
     }
 
-    private void CarHit() {
+    private void AddScore() {
         var ratio = _Car.Speed / _Car.CarMaxForwardSpeed;
         _Score += (int)(ratio * 1000.0f);
         _ScoreLabel.Text = $"{_Score}$";
     }
 
     private void GameOver() {
-        var scene = LoadCache.GetInstance().LoadScene("CarCrash");
-        var inst = scene.Instance<CarCrash>();
+        var inst = LoadCache.GetInstance().InstantiateScene<CarCrash>();
         inst.Position = _Car.Position;
         AddChild(inst);
 
@@ -197,18 +195,16 @@ public class Game : Control
         var size = GetViewportRect().Size;
         var offset = 100;
 
-        var scene = LoadCache.GetInstance().LoadScene("Obstacle");
-        var inst = scene.Instance<Obstacle>();
+        var inst = LoadCache.GetInstance().InstantiateScene<Obstacle>();
         inst.Car = _Car;
         inst.Position = new Vector2((float)GD.RandRange(offset, size.x - offset), -100);
-        inst.Connect(nameof(Obstacle.hit), this, nameof(CarHit));
+        inst.Connect(nameof(Obstacle.hit), this, nameof(AddScore));
 
         _ObstaclesContainer.AddChild(inst);
     }
 
     private void SpawnBlockingObstacle(Vector2 pos) {
-        var scene = LoadCache.GetInstance().LoadScene("BlockingObstacle");
-        var inst = scene.Instance<BlockingObstacle>();
+        var inst = LoadCache.GetInstance().InstantiateScene<BlockingObstacle>();
         inst.Car = _Car;
         inst.Position = pos;
 
@@ -219,8 +215,7 @@ public class Game : Control
         var size = GetViewportRect().Size;
         var offset = 100;
 
-        var scene = LoadCache.GetInstance().LoadScene("Chronometer");
-        var inst = scene.Instance<Chronometer>();
+        var inst = LoadCache.GetInstance().InstantiateScene<Chronometer>();
         inst.Car = _Car;
         inst.Position = new Vector2((float)GD.RandRange(offset, size.x - offset), -100);
         inst.Connect(nameof(Chronometer.picked), this, nameof(TimePicked));

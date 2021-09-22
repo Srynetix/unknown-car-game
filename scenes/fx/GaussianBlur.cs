@@ -1,11 +1,10 @@
 using Godot;
-using ShaderExt;
 
 public class GaussianBlur : Control
 {
     [Export]
     public float Strength {
-        get => this.GetShaderParam<float>("strength");
-        set => this.SetShaderParam("strength", value);
+        get => ShaderExt.GetShaderParam<float>(this, "strength");
+        set => ShaderExt.SetShaderParam(this, "strength", value);
     }
 }

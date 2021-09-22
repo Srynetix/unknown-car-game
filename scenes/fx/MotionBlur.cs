@@ -1,17 +1,16 @@
 using Godot;
-using ShaderExt;
 
 public class MotionBlur : ColorRect
 {
     [Export]
     public float Strength {
-        get => this.GetShaderParam<float>("strength");
-        set => this.SetShaderParam("strength", value);
+        get => ShaderExt.GetShaderParam<float>(this, "strength");
+        set => ShaderExt.SetShaderParam(this, "strength", value);
     }
 
     [Export]
     public float AngleDegrees {
-        get => this.GetShaderParam<float>("angle_degrees");
-        set => this.SetShaderParam("angle_degrees", value);
+        get => ShaderExt.GetShaderParam<float>(this, "angle_degrees");
+        set => ShaderExt.SetShaderParam(this, "angle_degrees", value);
     }
 }
