@@ -1,4 +1,5 @@
 using Godot;
+using FxPlugin;
 
 public class Game : Control
 {

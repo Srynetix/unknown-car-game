@@ -2,7 +2,7 @@
 
 [ext_resource path="res://assets/fonts/VG5000/VG5000-Regular.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/screens/Game/GameOver.cs" type="Script" id=2]
-[ext_resource path="res://scenes/fx/GaussianBlur.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/fx/screen-effects/GaussianBlur.tscn" type="PackedScene" id=3]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
