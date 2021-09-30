@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://assets/fonts/VG5000/VG5000-Regular.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/background/Background.tscn" type="PackedScene" id=2]
@@ -79,7 +79,49 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 
-[sub_resource type="DynamicFont" id=7]
+[sub_resource type="Animation" id=7]
+resource_name = "bump"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Time:custom_colors/font_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.5 ),
+"transitions": PoolRealArray( 1, 0.25, 0.378929 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0.498039 ), Color( 0.156863, 0.854902, 0.0352941, 0.498039 ), Color( 1, 1, 1, 0.498039 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath("..")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "AddOneSecondToTimer"
+}, {
+"args": [  ],
+"method": "AddOneSecondToTimer"
+}, {
+"args": [  ],
+"method": "AddOneSecondToTimer"
+}, {
+"args": [  ],
+"method": "AddOneSecondToTimer"
+}, {
+"args": [  ],
+"method": "AddOneSecondToTimer"
+} ]
+}
+
+[sub_resource type="DynamicFont" id=8]
 size = 64
 outline_size = 2
 outline_color = Color( 0, 0, 0, 0.498039 )
@@ -131,7 +173,6 @@ position = Vector2( 226.288, 669.937 )
 [node name="Vignette" parent="." instance=ExtResource( 6 )]
 margin_top = -9.0
 margin_bottom = 11.0
-Ratio = 0.0
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="."]
 copy_mode = 2
@@ -140,9 +181,6 @@ __meta__ = {
 }
 
 [node name="Shockwave" parent="." instance=ExtResource( 7 )]
-Force = 0.09
-Center = Vector2( 0.5, 0.5 )
-Thickness = 0.05
 
 [node name="UIBottom" type="CanvasLayer" parent="."]
 
@@ -172,7 +210,7 @@ margin_right = 38.0
 margin_bottom = 38.5
 rect_pivot_offset = Vector2( 38, 38 )
 custom_fonts/font = SubResource( 4 )
-custom_colors/font_color = Color( 1, 1, 1, 0.498039 )
+custom_colors/font_color = Color( 0.833454, 0.971339, 0.809441, 0.498039 )
 text = "0"
 align = 1
 valign = 1
@@ -201,6 +239,9 @@ __meta__ = {
 autoplay = "idle"
 anims/idle = SubResource( 6 )
 
+[node name="TimeAnimation" type="AnimationPlayer" parent="UIBottom"]
+anims/bump = SubResource( 7 )
+
 [node name="GameOver" parent="." instance=ExtResource( 8 )]
 
 [node name="UITop" type="CanvasLayer" parent="."]
@@ -208,7 +249,7 @@ anims/idle = SubResource( 6 )
 [node name="Score" type="Label" parent="UITop"]
 anchor_right = 1.0
 margin_bottom = 77.0
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 0, 0.890196, 0.0784314, 0.498039 )
 text = "0$"
 align = 1

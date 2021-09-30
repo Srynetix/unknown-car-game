@@ -26,6 +26,7 @@ public class Game : Control
     private Vignette _Vignette;
     private Shockwave _Shockwave;
     private GameOver _GameOver;
+    private AnimationPlayer _TimeAnimationPlayer;
 
     private Vector2 _TileSize;
     private float _NextTimeout;
@@ -56,8 +57,9 @@ public class Game : Control
         _Vignette = GetNode<Vignette>("Vignette");
         _Shockwave = GetNode<Shockwave>("Shockwave");
         _GameOver = GetNode<GameOver>("GameOver");
+        _TimeAnimationPlayer = GetNode<AnimationPlayer>("UIBottom/TimeAnimation");
 
-        _SpawnTimer.Connect("timeout", this, nameof(TimeOut));
+        _SpawnTimer.Connect("timeout", this, nameof(SpawnTimeOut));
         _ChronoTimer.Connect("timeout", this, nameof(ChronoTimeOut));
         _SpawnBlockingTimer.Connect("timeout", this, nameof(BlockingTimeOut));
         _Car.Connect(nameof(Car.crash), this, nameof(GameOver));
@@ -127,9 +129,9 @@ public class Game : Control
 
     #region Callbacks
 
-    private void TimeOut()
+    private void SpawnTimeOut()
     {
-        if ((int)GD.RandRange(0, 20) == 0)
+        if ((int)GD.RandRange(0, 10) == 0)
         {
             SpawnChronometer();
         }
@@ -172,9 +174,19 @@ public class Game : Control
         _SpawnBlockingTimer.Start();
     }
 
-    private void TimePicked()
+    private async void TimePicked()
     {
-        _RemainingTime += 3;
+        _ChronoTimer.Stop();
+
+        _TimeAnimationPlayer.Play("bump");
+        await ToSignal(_TimeAnimationPlayer, "animation_finished");
+
+        _ChronoTimer.Start();
+    }
+
+    public void AddOneSecondToTimer()
+    {
+        _RemainingTime += 1;
         UpdateTimeLabel();
     }
 
