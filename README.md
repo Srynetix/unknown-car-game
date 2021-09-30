@@ -2,6 +2,8 @@
 
 Simple car game made in Godot Engine, using C#.
 
+:rocket: [Play it here!](https://srynetix.github.io/unknown-car-game)
+
 ## Preview
 
 ![Preview](./docs/preview.gif)
