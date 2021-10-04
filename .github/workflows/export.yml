@@ -81,7 +81,7 @@ jobs:
         with:
           name: ${{ env.EXPORT_NAME }}-macos
           path: build/mac
-    
+
   web:
     name: Web Export
     runs-on: ubuntu-latest
@@ -99,7 +99,7 @@ jobs:
       - name: Web Build
         run: |
           mkdir -v -p build/web
-          godot -v --export "HTML5" --debug ./build/web/index.html
+          godot -v --export-debug "HTML5" ./build/web/index.html
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
