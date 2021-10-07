@@ -173,6 +173,7 @@ position = Vector2( 226.288, 669.937 )
 [node name="Vignette" parent="." instance=ExtResource( 6 )]
 margin_top = -9.0
 margin_bottom = 11.0
+Size = 5.0
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="."]
 copy_mode = 2
