@@ -1,5 +1,5 @@
 using Godot;
-using FxPlugin;
+using SxGD;
 
 public class Game : Control
 {
