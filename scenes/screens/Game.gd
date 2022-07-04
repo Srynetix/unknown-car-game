@@ -127,6 +127,7 @@ func _spawn_chronometer() -> void:
     inst.car = _car
     inst.position = Vector2(rand_range(offset, size.x - offset), -100)
     inst.connect("picked", self, "_time_picked")
+    _obstacles_container.add_child(inst)
 
 func _spawn_obstacle() -> void:
     var size = get_viewport_rect().size
@@ -136,7 +137,6 @@ func _spawn_obstacle() -> void:
     inst.car = _car
     inst.position = Vector2(rand_range(offset, size.x - offset), -100)
     inst.connect("hit", self, "_add_score")
-
     _obstacles_container.add_child(inst)
 
 func _spawn_blocking_obstacle(pos: Vector2) -> void:
