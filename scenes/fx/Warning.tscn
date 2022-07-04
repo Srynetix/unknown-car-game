@@ -2,7 +2,7 @@
 
 [ext_resource path="res://assets/packs/kenney_racingpack_updated/PNG/Objects/cone_down.png" type="Texture" id=1]
 [ext_resource path="res://assets/fonts/VG5000/VG5000-Regular.otf" type="DynamicFontData" id=2]
-[ext_resource path="res://scenes/fx/Warning.cs" type="Script" id=3]
+[ext_resource path="res://scenes/fx/Warning.gd" type="Script" id=3]
 
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 2 )

@@ -1,8 +1,8 @@
 [gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://assets/fonts/VG5000/VG5000-Regular.otf" type="DynamicFontData" id=1]
-[ext_resource path="res://scenes/screens/Game/GameOver.cs" type="Script" id=2]
-[ext_resource path="res://addons/fx/screen-effects/BetterBlur.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/screens/Game/GameOver.gd" type="Script" id=2]
+[ext_resource path="res://addons/sxgd/nodes/fx/screen-effects/SxBetterBlur/SxBetterBlur.tscn" type="PackedScene" id=3]
 
 [sub_resource type="DynamicFont" id=6]
 size = 64
@@ -20,8 +20,6 @@ use_mipmaps = true
 use_filter = true
 font_data = ExtResource( 1 )
 
-[sub_resource type="StyleBoxEmpty" id=3]
-
 [sub_resource type="DynamicFont" id=4]
 size = 64
 outline_size = 2
@@ -29,6 +27,8 @@ outline_color = Color( 0.407843, 0.211765, 0.211765, 1 )
 use_mipmaps = true
 use_filter = true
 font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxEmpty" id=3]
 
 [sub_resource type="Animation" id=5]
 length = 1.5
@@ -81,7 +81,7 @@ tracks/3/keys = {
 "values": [ 0.0, 0.0, -150 ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("BetterBlur:Strength")
+tracks/4/path = NodePath("BetterBlur:strength")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
@@ -105,8 +105,8 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -200.0
 margin_top = 450.0
-custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 0.647059, 0, 0, 1 )
+custom_fonts/font = SubResource( 6 )
 text = "YOU"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -130,9 +130,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -159.5
-custom_styles/focus = SubResource( 3 )
-custom_fonts/font = SubResource( 4 )
 custom_colors/font_color = Color( 0.443137, 0.313726, 0.501961, 1 )
+custom_fonts/font = SubResource( 4 )
+custom_styles/focus = SubResource( 3 )
 shortcut_in_tooltip = false
 text = "Play again"
 flat = true
