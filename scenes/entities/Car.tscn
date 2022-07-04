@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/packs/kenney_racingpack_updated/PNG/Cars/car_red_3.png" type="Texture" id=1]
-[ext_resource path="res://scenes/entities/Car.cs" type="Script" id=2]
+[ext_resource path="res://scenes/entities/Car.gd" type="Script" id=2]
 [ext_resource path="res://assets/packs/smokeparticleassets/PNG/White puff/whitePuff03.png" type="Texture" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]

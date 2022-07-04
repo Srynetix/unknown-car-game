@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://scenes/screens/Splash.cs" type="Script" id=1]
+[ext_resource path="res://scenes/screens/Splash.gd" type="Script" id=1]
 [ext_resource path="res://scenes/background/Background.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/fonts/VG5000/VG5000-Regular.otf" type="DynamicFontData" id=3]
 
@@ -107,9 +107,6 @@ tracks/3/keys = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Background" parent="." instance=ExtResource( 2 )]
 
