@@ -26,3 +26,8 @@ initial_velocity_random = 1.0
 damping = 100.0
 scale_amount = 0.1
 color_ramp = SubResource( 2 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.75
+one_shot = true
+autostart = true
