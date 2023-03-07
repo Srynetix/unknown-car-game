@@ -16,9 +16,9 @@ onready var _chrono_timer: Timer = $ChronoTimer
 onready var _camera: Camera2D = $Camera
 onready var _car: Car = $Car
 onready var _obstacles_container: Node2D = $Obstacles
-onready var _motion_blur: SxMotionBlur = $MotionBlur
-onready var _vignette: SxVignette = $Vignette
-onready var _shockwave: SxShockwave = $Shockwave
+onready var _motion_blur: SxFxMotionBlur = $MotionBlur
+onready var _vignette: SxFxVignette = $VignetteLayer/Vignette
+onready var _shockwave: SxFxShockwave = $Shockwave
 onready var _game_over: GameOver = $GameOver
 onready var _time_animation_player: AnimationPlayer = $UIBottom/TimeAnimation
 
@@ -78,7 +78,7 @@ func _update_effects() -> void:
     _next_timeout = 0.25 + ((1.0 - ratio) * 2.0)
 
 func _spawn_timeout() -> void:
-    if SxMath.rand_range_i(0, 10) == 0:
+    if SxRand.range_i(0, 10) == 0:
         _spawn_chronometer()
     else:
         _spawn_obstacle()

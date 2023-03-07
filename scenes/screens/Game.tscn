@@ -1,37 +1,13 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://assets/fonts/VG5000/VG5000-Regular.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/background/Background.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/screens/Game.gd" type="Script" id=3]
 [ext_resource path="res://scenes/entities/Car.tscn" type="PackedScene" id=4]
-[ext_resource path="res://addons/sxgd/nodes/fx/screen-effects/SxMotionBlur/SxMotionBlur.tscn" type="PackedScene" id=5]
-[ext_resource path="res://addons/sxgd/nodes/fx/screen-effects/SxVignette/SxVignette.tscn" type="PackedScene" id=6]
-[ext_resource path="res://addons/sxgd/nodes/fx/screen-effects/SxShockwave/SxShockwave.tscn" type="PackedScene" id=7]
+[ext_resource path="res://addons/sxgd/nodes/fx/screen-effects/SxFxMotionBlur/SxFxMotionBlur.gd" type="Script" id=5]
+[ext_resource path="res://addons/sxgd/nodes/fx/screen-effects/SxFxVignette/SxFxVignette.gd" type="Script" id=6]
+[ext_resource path="res://addons/sxgd/nodes/fx/screen-effects/SxFxShockwave/SxFxShockwave.gd" type="Script" id=7]
 [ext_resource path="res://scenes/screens/Game/GameOver.tscn" type="PackedScene" id=8]
-[ext_resource path="res://addons/sxgd/nodes/fx/screen-effects/SxShockwave/Shockwave.gdshader" type="Shader" id=9]
-[ext_resource path="res://addons/sxgd/nodes/fx/screen-effects/SxVignette/Vignette.gdshader" type="Shader" id=10]
-[ext_resource path="res://addons/sxgd/nodes/fx/screen-effects/SxMotionBlur/MotionBlur.gdshader" type="Shader" id=11]
-
-[sub_resource type="ShaderMaterial" id=11]
-resource_local_to_scene = true
-shader = ExtResource( 11 )
-shader_param/angle_degrees = 90.0
-shader_param/samples = 10
-shader_param/strength = 0.0
-
-[sub_resource type="ShaderMaterial" id=9]
-resource_local_to_scene = true
-shader = ExtResource( 10 )
-shader_param/size = 5.0
-shader_param/ratio = 0.25
-
-[sub_resource type="ShaderMaterial" id=10]
-resource_local_to_scene = true
-shader = ExtResource( 9 )
-shader_param/center = Vector2( 100, 100 )
-shader_param/force = 0.09
-shader_param/size = 1.0
-shader_param/thickness = 0.05
 
 [sub_resource type="DynamicFont" id=3]
 outline_size = 1
@@ -152,17 +128,25 @@ wait_time = 5.0
 one_shot = true
 autostart = true
 
-[node name="MotionBlur" parent="." instance=ExtResource( 5 )]
-material = SubResource( 11 )
+[node name="MotionBlur" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 1, 1, 1, 0 )
+script = ExtResource( 5 )
 angle_degrees = 90.0
 
 [node name="Car" parent="." instance=ExtResource( 4 )]
 position = Vector2( 226.288, 669.937 )
 
-[node name="Vignette" parent="." instance=ExtResource( 6 )]
-material = SubResource( 9 )
-margin_top = -9.0
-margin_bottom = 11.0
+[node name="VignetteLayer" type="CanvasLayer" parent="."]
+
+[node name="Vignette" type="ColorRect" parent="VignetteLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 1, 1, 1, 0 )
+script = ExtResource( 6 )
 vignette_size = 5.0
 
 [node name="BackBufferCopy" type="BackBufferCopy" parent="."]
@@ -171,10 +155,12 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Shockwave" parent="." instance=ExtResource( 7 )]
-material = SubResource( 10 )
-margin_left = 1.0
-margin_right = 1.0
+[node name="Shockwave" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 1, 1, 1, 0 )
+script = ExtResource( 7 )
 
 [node name="UIBottom" type="CanvasLayer" parent="."]
 

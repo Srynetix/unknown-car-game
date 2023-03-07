@@ -3,7 +3,7 @@ class_name GameOver
 
 onready var _restart_button: Button = $Play
 onready var _animation_player: AnimationPlayer = $AnimationPlayer
-onready var _better_blur: SxBetterBlur = $BetterBlur
+onready var _better_blur: SxFxBetterBlur = $BetterBlur
 
 func _ready() -> void:
     _restart_button.connect("pressed", self, "_restart_game")

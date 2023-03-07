@@ -2,7 +2,7 @@
 
 [ext_resource path="res://assets/fonts/VG5000/VG5000-Regular.otf" type="DynamicFontData" id=1]
 [ext_resource path="res://scenes/screens/Game/GameOver.gd" type="Script" id=2]
-[ext_resource path="res://addons/sxgd/nodes/fx/screen-effects/SxBetterBlur/SxBetterBlur.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/sxgd/nodes/fx/screen-effects/SxFxBetterBlur/SxFxBetterBlur.gd" type="Script" id=3]
 
 [sub_resource type="DynamicFont" id=6]
 size = 64
@@ -96,7 +96,8 @@ tracks/4/keys = {
 [node name="GameOver" type="CanvasLayer"]
 script = ExtResource( 2 )
 
-[node name="BetterBlur" parent="." instance=ExtResource( 3 )]
+[node name="BetterBlur" parent="." type="Control"]
+script = ExtResource( 3 )
 
 [node name="You" type="Label" parent="."]
 anchor_left = 0.5
