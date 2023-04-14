@@ -3,3 +3,4 @@
 /.mono
 /exports/*
 !/exports/.gdignore
+/.godot
