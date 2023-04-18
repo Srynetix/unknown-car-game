@@ -1,20 +1,21 @@
-extends KinematicBody2D
+extends CharacterBody2D
 class_name Car
 
 signal crashed()
 
-export var turn_speed := 70.0
-export var forward_speed := 400.0
-export var brake_speed := 100.0
-export var max_forward_speed := 1500.0
-export var min_forward_speed := 200.0
-export var max_angle := 50.0
-export var touch_input_turn_amount := 100.0
+@export var turn_speed := 70.0
+@export var forward_speed := 400.0
+@export var brake_speed := 100.0
+@export var max_forward_speed := 1500.0
+@export var min_forward_speed := 200.0
+@export var max_angle := 50.0
+@export var touch_input_turn_amount := 100.0
 
 var speed = 0
 
-onready var _sprite: Sprite = $Sprite
-onready var _particles: CPUParticles2D = $Particles
+@onready var _sprite: Sprite2D = $Sprite
+@onready var _particles: CPUParticles2D = $Particles
+
 var _moving_forward := false
 var _crashed := false
 var _last_touch_idx := -1
@@ -104,5 +105,7 @@ func _handle_effects() -> void:
     color.a = ratio
     
     _particles.modulate = color
-    _particles.damping = (1.0 - ratio) * 50.0
-    _particles.radial_accel = ratio * 100
+    _particles.damping_max = (1.0 - ratio) * 50.0
+    _particles.damping_min = (1.0 - ratio) * 50.0
+    _particles.radial_accel_min = ratio * 100
+    _particles.radial_accel_max = ratio * 100

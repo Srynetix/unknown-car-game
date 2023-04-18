@@ -1,12 +1,12 @@
 extends CanvasLayer
 class_name GameOver
 
-onready var _restart_button: Button = $Play
-onready var _animation_player: AnimationPlayer = $AnimationPlayer
-onready var _better_blur: SxFxBetterBlur = $BetterBlur
+@onready var _restart_button: Button = $Play
+@onready var _animation_player: AnimationPlayer = $AnimationPlayer
+@onready var _better_blur: SxFxBetterBlur = $BetterBlur
 
 func _ready() -> void:
-    _restart_button.connect("pressed", self, "_restart_game")
+    _restart_button.pressed.connect(_restart_game)
 
 func start() -> void:
     _better_blur.visible = true

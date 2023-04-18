@@ -21,10 +21,12 @@ texture = ExtResource( 1 )
 direction = Vector2( 1, 1 )
 spread = 180.0
 gravity = Vector2( 0, 0 )
-initial_velocity = 500.0
-initial_velocity_random = 1.0
-damping = 100.0
-scale_amount = 0.1
+initial_velocity_min = 0.0
+initial_velocity_max = 500.0
+damping_min = 100.0
+damping_max = 100.0
+scale_amount_min = 0.1
+scale_amount_max = 0.1
 color_ramp = SubResource( 2 )
 
 [node name="Timer" type="Timer" parent="."]
