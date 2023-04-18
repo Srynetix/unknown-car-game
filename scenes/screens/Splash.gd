@@ -1,6 +1,6 @@
 extends Control
 
-onready var _animation_player: AnimationPlayer = $AnimationPlayer
+@onready var _animation_player: AnimationPlayer = $AnimationPlayer
 var _will_load_game := false
 
 func _input(event: InputEvent) -> void:
@@ -19,5 +19,5 @@ func _load_game() -> void:
         _will_load_game = true
         _animation_player.play("fade")
 
-        yield(_animation_player, "animation_finished")
-        get_tree().change_scene("res://scenes/screens/Game.tscn")
+        await _animation_player.animation_finished
+        get_tree().change_scene_to_file("res://scenes/screens/Game.tscn")

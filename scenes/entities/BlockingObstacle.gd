@@ -6,3 +6,6 @@ func _ready() -> void:
 
 func _car_collision(target_car: Car) -> void:
     target_car.crash()
+
+func _move_after_collision() -> void:
+    pass

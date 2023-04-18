@@ -1,6 +1,6 @@
 # Unknown car game
 
-Simple car game made in Godot Engine, using C#.
+Simple car game made in Godot Engine 4.0.2, using GDScript.
 
 :rocket: [Play it here!](https://srynetix.github.io/unknown-car-game)
 
